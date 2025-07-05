@@ -4,6 +4,7 @@ import { Bot, Sparkles, Code, Database } from "lucide-react"
 import Navbar from "@/components/navbar"
 import InterviewCard from "@/components/interview-card"
 import { isAuthenticated } from "@/actions/auth.actions"
+import { redirect } from "next/navigation";
 
 export default async function Dashboard() {
 
