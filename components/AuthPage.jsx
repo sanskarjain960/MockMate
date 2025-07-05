@@ -54,7 +54,7 @@ export default function AuthPage() {
       });
 
       toast.success("Signed In Successfully");
-      router.push('/home');
+      router.push('/');
 
     } else {
       // Sign up logic
