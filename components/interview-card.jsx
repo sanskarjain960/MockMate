@@ -7,6 +7,10 @@ import Link from "next/link"
 import Image from "next/image"
 import DisplayTechIcons from "./DisplayTechIcons.jsx"
 import { cn } from "@/lib/utils"
+import { useEffect } from "react"
+import { useState } from "react"
+import { getFeedbackByInterviewId } from "@/actions/general.actions"
+import Loader from "./Loading.jsx"
 
 export default function InterviewCard({
   interviewId,
@@ -15,9 +19,32 @@ export default function InterviewCard({
   type,
   techstack = [],
   createdAt,
-  feedback,
   hasScore = true,
 }) {
+
+  const [feedback, setFeedback] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchFeedback = async () => {
+      try {
+        const feedback =
+    userId && interviewId
+      ? await getFeedbackByInterviewId({
+          interviewId,
+          userId,
+        })
+      : null;
+      
+        setFeedback(feedback)
+        setLoading(false)
+      } catch (error) {
+        console.error("Error fetching feedback:", error)
+      }
+    }
+    fetchFeedback()
+  }, [interviewId])
+
   const normalizedType = /mix/gi.test(type) ? "Mixed" : type
 
   const badgeColor =
@@ -32,6 +59,8 @@ export default function InterviewCard({
     day: "numeric",
     year: "numeric",
   })
+
+  // if(loading) return <Loader />
 
   return (
     <div className="w-[360px] max-sm:w-full min-h-96">

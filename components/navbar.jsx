@@ -9,7 +9,7 @@ export default function Navbar() {
     <nav className="bg-black/50 backdrop-blur-xl border-b border-white/10 px-6 py-4 relative z-20">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <Link href="/home" className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3">
           <div className="p-2 bg-gradient-to-r from-gray-700 to-gray-600 rounded-xl">
             <MessageCircle className="w-5 h-5 text-white" />
           </div>
