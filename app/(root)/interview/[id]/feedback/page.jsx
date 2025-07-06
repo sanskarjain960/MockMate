@@ -177,7 +177,7 @@ export default  function Feedback({ params }) {
         <section className="flex flex-col sm:flex-row gap-4">
           <Button
             asChild
-            className="flex-1 bg-gray-600 hover:bg-gray-500 text-white rounded-full py-3 px-8 font-semibold transition-all duration-200"
+            className="flex-1 bg-white hover:bg-gray-300 text-black rounded-full py-3 px-8 font-semibold transition-all duration-200"
           >
             <Link href="/" className="flex items-center justify-center">
               Back to Dashboard
@@ -185,7 +185,7 @@ export default  function Feedback({ params }) {
           </Button>
           <Button
             asChild
-            className="flex-1 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500 text-white rounded-full py-3 px-8 font-semibold transition-all duration-200"
+            className="flex-1 bg-cyan-400  hover:bg-cyan-800 text-black rounded-full py-3 px-8 font-semibold transition-all duration-200"
           >
             <Link href={`/interview/${id}`} className="flex items-center justify-center">
               Retake interview

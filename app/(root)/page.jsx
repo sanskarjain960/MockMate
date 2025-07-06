@@ -81,7 +81,7 @@ export default function Dashboard() {
                   </p>
                   <Button
                     asChild
-                    className="bg-white hover:bg-gray-100 text-black px-8 py-3 rounded-xl text-base font-semibold border border-white/10 hover:scale-105 transition-all duration-200 max-sm:w-full"
+                    className="bg-cyan-400 hover:bg-gray-100 text-black px-8 py-3 rounded-xl text-base font-semibold border border-white/10 hover:scale-105 transition-all duration-200 max-sm:w-full"
                   >
                     <Link href="/interview">Start an Interview</Link>
                   </Button>
