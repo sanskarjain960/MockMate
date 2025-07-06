@@ -1,16 +1,16 @@
-"use client"
-import { getRandomInterviewCover } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Star, Calendar } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
-import DisplayTechIcons from "./DisplayTechIcons.jsx"
-import { cn } from "@/lib/utils"
-import { useEffect } from "react"
-import { useState } from "react"
-import { getFeedbackByInterviewId } from "@/actions/general.actions"
-import Loader from "./Loading.jsx"
+"use client";
+import { getRandomInterviewCover } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Star, Calendar } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import DisplayTechIcons from "./DisplayTechIcons.jsx";
+import { cn } from "@/lib/utils";
+import { useEffect } from "react";
+import { useState } from "react";
+import { getFeedbackByInterviewId } from "@/actions/general.actions";
+import Loader from "./Loading.jsx";
 
 export default function InterviewCard({
   interviewId,
@@ -21,44 +21,45 @@ export default function InterviewCard({
   createdAt,
   hasScore = true,
 }) {
-
-  const [feedback, setFeedback] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [feedback, setFeedback] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchFeedback = async () => {
       try {
         const feedback =
-    userId && interviewId
-      ? await getFeedbackByInterviewId({
-          interviewId,
-          userId,
-        })
-      : null;
-      
-        setFeedback(feedback)
-        setLoading(false)
-      } catch (error) {
-        console.error("Error fetching feedback:", error)
-      }
-    }
-    fetchFeedback()
-  }, [interviewId])
+          userId && interviewId
+            ? await getFeedbackByInterviewId({
+                interviewId,
+                userId,
+              })
+            : null;
 
-  const normalizedType = /mix/gi.test(type) ? "Mixed" : type
+        setFeedback(feedback);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching feedback:", error);
+      }
+    };
+    fetchFeedback();
+  }, [interviewId]);
+
+  const normalizedType = /mix/gi.test(type) ? "Mixed" : type;
 
   const badgeColor =
     {
       Behavioral: "bg-green-500/20 text-green-300 border-green-500/30",
       Mixed: "bg-purple-500/20 text-purple-300 border-purple-500/30",
       Technical: "bg-blue-500/20 text-blue-300 border-blue-500/30",
-    }[normalizedType] || "bg-gray-500/20 text-gray-300 border-gray-500/30"
+    }[normalizedType] || "bg-gray-500/20 text-gray-300 border-gray-500/30";
 
-  const formattedDate = new Date(feedback?.createdAt || createdAt || Date.now()).toLocaleDateString("en-US", {
+  const formattedDate = new Date(
+    feedback?.createdAt || createdAt || Date.now()
+  ).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",
-  })
+  });
 
   // if(loading) return <Loader />
 
@@ -70,7 +71,7 @@ export default function InterviewCard({
           variant="secondary"
           className={cn(
             "absolute top-0 right-0 rounded-tl-none rounded-tr-2xl rounded-bl-lg rounded-br-none px-4 py-2",
-            badgeColor,
+            badgeColor
           )}
         >
           {normalizedType}
@@ -103,28 +104,42 @@ export default function InterviewCard({
             </div>
             <div className="flex flex-row gap-2 items-center">
               <Star className="w-4 h-4 text-gray-400" />
-              <p className={`text-sm ${hasScore ? "text-yellow-400 font-medium" : "text-gray-400"}`}>
-                {hasScore && feedback?.totalScore ? `${feedback.totalScore}/100` : "---/100"}
+              <p
+                className={`text-sm ${
+                  hasScore ? "text-yellow-400 font-medium" : "text-gray-400"
+                }`}
+              >
+                {hasScore && feedback?.totalScore
+                  ? `${feedback.totalScore}/100`
+                  : "---/100"}
               </p>
             </div>
           </div>
 
           {/* Feedback or Placeholder Text */}
           <p className="text-gray-400 text-sm leading-relaxed line-clamp-2 mb-6 text-center">
-            {feedback?.finalAssessment || "You haven't taken this interview yet. Take it now to improve your skills."}
+            {feedback?.finalAssessment ||
+              "You haven't taken this interview yet. Take it now to improve your skills."}
           </p>
         </div>
 
         {/* Bottom Section */}
         <div className="flex flex-row justify-between items-center">
           <DisplayTechIcons techStack={techstack} />
-          <Button className="bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-white rounded-xl px-4 py-2 font-semibold text-sm border border-white/10 hover:scale-105 transition-all duration-200">
-            <Link href={feedback ? `/interview/${interviewId}/feedback` : `/interview/${interviewId}`}>
+
+          <Button className="bg-white hover:bg-gray-100 text-black rounded-xl px-4 py-2 font-semibold text-sm border border-white/10 hover:scale-105 transition-all duration-200">
+            <Link
+              href={
+                feedback
+                  ? `/interview/${interviewId}/feedback`
+                  : `/interview/${interviewId}`
+              }
+            >
               {feedback ? "Check Feedback" : "View Interview"}
             </Link>
           </Button>
         </div>
       </div>
     </div>
-  )
+  );
 }

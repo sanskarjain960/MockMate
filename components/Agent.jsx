@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MessageCircle, Database, Plus } from "lucide-react";
+import { MessageCircle, Database, Plus, Video, VideoOff, User } from "lucide-react";
 import Navbar from "@/components/navbar";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -12,18 +12,7 @@ import { vapi } from "@/lib/vapi.sdk";
 import { interviewer } from "@/constants/index";
 import { createFeedback } from "@/actions/general.actions";
 import DisplayTechIcons from "./DisplayTechIcons";
-
-// const interviewer = {
-//   // Mock interviewer config
-//   model: "gpt-4",
-//   voice: "default",
-// }
-
-// const createFeedback = async (data) => {
-//   // Mock feedback creation
-//   console.log("Creating feedback", data)
-//   return { success: true, feedbackId: "mock-feedback-id" }
-// }
+import CameraFeed from "./cameraFeed";
 
 const CallStatus = {
   INACTIVE: "INACTIVE",
@@ -47,18 +36,9 @@ export default function Agent({
   const [messages, setMessages] = useState([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [lastMessage, setLastMessage] = useState("");
-
-  // Mock interview data
-  //   const [userName] = useState("JS Mastery")
-  //   const [userId] = useState("user-123")
-  //   const [interviewId] = useState(params?.id || "interview-123")
-  //   const [feedbackId] = useState(null)
-  //   const [type] = useState("interview")
-  //   const [questions] = useState([
-  //     "Tell me about a challenging project you worked on",
-  //     "How do you handle debugging complex issues?",
-  //     "What's your experience with backend technologies?",
-  //   ])
+  
+  // Camera toggle state
+  const [isCameraOn, setIsCameraOn] = useState(false);
 
   // VAPI Event Listeners
   useEffect(() => {
@@ -182,6 +162,11 @@ export default function Agent({
     vapi.stop();
   };
 
+  // Toggle camera on/off
+  const toggleCamera = () => {
+    setIsCameraOn(!isCameraOn);
+  };
+
   const TechIcon = ({ tech }) => {
     const iconMap = {
       html: "🌐",
@@ -199,13 +184,15 @@ export default function Agent({
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden">
       {/* Background stars/sparkles effect */}
-      <div className="absolute inset-0">
-        <div className="absolute top-20 left-20 w-1 h-1 bg-white rounded-full animate-pulse"></div>
-        <div className="absolute top-40 right-32 w-1 h-1 bg-white rounded-full animate-pulse delay-100"></div>
-        <div className="absolute bottom-32 left-40 w-1 h-1 bg-white rounded-full animate-pulse delay-200"></div>
-        <div className="absolute top-60 right-20 w-1 h-1 bg-white rounded-full animate-pulse delay-300"></div>
-        <div className="absolute bottom-20 right-60 w-1 h-1 bg-white rounded-full animate-pulse delay-500"></div>
-      </div>
+      <Image 
+                src='/sprinkle2.svg'
+                alt="background" 
+                width={1000} 
+                height={1000} 
+                className="absolute inset-0 object-cover w-full h-full"
+              />
+
+      
 
       <Navbar />
 
@@ -272,31 +259,39 @@ export default function Agent({
           </div>
 
           {/* Candidate Card */}
-          <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10 hover:border-white/20 transition-all duration-300">
-            <div className="flex flex-col items-center justify-center h-72">
-              <div className="relative mb-8">
-                {/* Pulsing rings when candidate is speaking */}
-                {callStatus === CallStatus.ACTIVE && !isSpeaking && (
-                  <>
-                    <div className="absolute inset-0 w-28 h-28 bg-white/20 rounded-full animate-ping"></div>
-                    <div className="absolute inset-0 w-28 h-28 bg-white/10 rounded-full animate-ping animation-delay-75"></div>
-                    <div className="absolute inset-0 w-28 h-28 bg-white/5 rounded-full animate-ping animation-delay-150"></div>
-                  </>
-                )}
-                <div className="relative w-28 h-28 rounded-full overflow-hidden border-4 border-white/20 z-10">
-                  <Image
-                    src="/placeholder.svg?height=112&width=112"
-                    alt="User profile"
-                    width={112}
-                    height={112}
-                    className="rounded-full object-cover w-full h-full"
-                  />
-                </div>
+          <div className="pt-2 bg-white/5 backdrop-blur-xl rounded-3xl p-0 border border-white/10 hover:border-white/20 transition-all duration-300 relative overflow-hidden">
+
+            {isCameraOn ? (
+              <div className="h-72 w-full">
+                <CameraFeed  camera = {isCameraOn}/>
               </div>
-              <h3 className="text-white text-2xl font-semibold">
-                Me
-              </h3>
-            </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center h-72 px-8 pt-10">
+                <div className="relative mb-8">
+                  {/* Pulsing rings when candidate is speaking */}
+                  {callStatus === CallStatus.ACTIVE && !isSpeaking && (
+                    <>
+                      <div className="absolute inset-0 w-28 h-28 bg-white/20 rounded-full animate-ping"></div>
+                      <div className="absolute inset-0 w-28 h-28 bg-white/10 rounded-full animate-ping animation-delay-75"></div>
+                      <div className="absolute inset-0 w-28 h-28 bg-white/5 rounded-full animate-ping animation-delay-150"></div>
+                    </>
+                  )}
+                  <div className="relative w-28 h-28 rounded-full overflow-hidden border-4 border-white/20 z-10">
+                    {/* <Image
+                      src="/placeholder.svg?height=112&width=112"
+                      alt="User profile"
+                      width={112}
+                      height={112}
+                      className="rounded-full object-cover w-full h-full"
+                    /> */}
+                    <User className="w-28 h-28 text-white" /> 
+                  </div>
+                </div>
+                <h3 className="text-white text-2xl font-semibold">
+                  Me
+                </h3>
+              </div>
+            )}
           </div>
         </div>
 
@@ -318,7 +313,27 @@ export default function Agent({
         )}
 
         {/* Call Controls */}
-        <div className="flex justify-center">
+        <div className="flex justify-center items-center gap-4">
+          {/* Camera Toggle Button */}
+          <Button
+            onClick={toggleCamera}
+            className={cn(
+              "backdrop-blur-sm rounded-full px-6 py-4 text-lg font-semibold border transition-all duration-200 hover:scale-105",
+              isCameraOn 
+                ? "bg-red-500/90 hover:bg-red-600/90 border-red-400/30 text-white"
+                : "bg-white/90 hover:bg-white text-black border-white/30"
+            )}
+          >
+            {isCameraOn ? (
+              <VideoOff className="w-5 h-5 mr-2" />
+            ) : (
+              <Video className="w-5 h-5 mr-2" />
+            )}
+            <span>
+              {isCameraOn ? "Turn Off Camera" : "Turn On Camera"}
+            </span>
+          </Button>
+
           {callStatus !== CallStatus.ACTIVE ? (
             <Button
               onClick={handleCall}

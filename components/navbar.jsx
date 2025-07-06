@@ -1,10 +1,23 @@
 "use client"
 
-import { MessageCircle, User } from "lucide-react"
+import { MessageCircle, User, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { signOut } from "@/actions/auth.actions";
+import { useState } from "react";
 
 export default function Navbar() {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const handleLogout = () => {
+    
+    try {
+      const res = signOut();
+      setIsDropdownOpen(false);
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
   return (
     <nav className="bg-black/50 backdrop-blur-xl border-b border-white/10 px-6 py-4 relative z-20">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -19,11 +32,39 @@ export default function Navbar() {
         </Link>
 
         {/* User Profile */}
-        <Button variant="ghost" size="sm" className="p-2 hover:bg-white/10 rounded-full">
-          <div className="w-8 h-8 bg-gradient-to-r from-gray-600 to-gray-500 rounded-full flex items-center justify-center">
-            <User className="w-4 h-4 text-white" />
+        <div className="relative">
+      <button
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        className="p-3 hover:bg-white/10 rounded-full transition-colors duration-200"
+      >
+        <div className="w-12 h-12 bg-gradient-to-r from-gray-600 to-gray-500 rounded-full flex items-center justify-center shadow-lg">
+          <User className="w-6 h-6 text-white" />
+        </div>
+      </button>
+
+      {isDropdownOpen && (
+        <>
+          {/* Backdrop to close dropdown when clicking outside */}
+          <div 
+            className="fixed inset-0 z-10" 
+            onClick={() => setIsDropdownOpen(false)}
+          />
+          
+          {/* Dropdown menu */}
+          <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-20">
+            <div className="py-1">
+              <button
+                onClick={handleLogout}
+                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2 transition-colors duration-150"
+              >
+                <LogOut className="w-4 h-4" />
+                Logout
+              </button>
+            </div>
           </div>
-        </Button>
+        </>
+      )}
+    </div>
       </div>
     </nav>
   )

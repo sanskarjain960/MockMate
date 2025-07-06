@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { auth } from "@/firebase/client.js";
 import { toast } from "sonner";
 import { isAuthenticated } from "@/actions/auth.actions"
+import Image from "next/image"
 
 
 export default function AuthPage() {
@@ -105,10 +106,13 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-800/20 via-black/10 to-transparent"></div>
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gray-500/10 rounded-full blur-3xl"></div>
+      <Image 
+                src='/sprinkle.svg'
+                alt="background" 
+                width={1000} 
+                height={1000} 
+                className="absolute inset-0 object-cover w-full h-full"
+              />
 
       <div className="w-full max-w-sm relative z-10">
         <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl">
@@ -171,13 +175,14 @@ export default function AuthPage() {
               />
             </div>
 
-            <Button
-                onClick={handleSubmit}
-                type="button"
-                className="w-full bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-white rounded-2xl h-14 mt-8 font-semibold text-base shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] border border-white/10"
-              >
-                {isSignIn ? "Sign In" : "Create an Account"}
-              </Button>
+            
+<Button
+  onClick={handleSubmit}
+  type="button"
+  className="w-full bg-white hover:bg-gray-100 text-black rounded-2xl h-14 mt-8 font-semibold text-base shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] border border-white/10"
+>
+  {isSignIn ? "Sign In" : "Create an Account"}
+</Button>
           </form>
 
           <div className="text-center mt-8">
