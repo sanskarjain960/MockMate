@@ -1,6 +1,6 @@
 "use client"
 
-import { MessageCircle, User, LogOut } from "lucide-react"
+import { CheckCircle,Mic,Target, User, LogOut,Trophy, UserCheck,Layers  } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { signOut } from "@/actions/auth.actions";
@@ -24,10 +24,10 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3">
           <div className="p-2 bg-gradient-to-r from-gray-700 to-gray-600 rounded-xl">
-            <MessageCircle className="w-5 h-5 text-white" />
+            < CheckCircle  className="w-5 h-5 text-white" />
           </div>
           <h1 className="text-white text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-            PrepWise
+            FinalRound AI
           </h1>
         </Link>
 

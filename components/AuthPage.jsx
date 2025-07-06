@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { MessageCircle } from "lucide-react"
+import { MessageCircle,CheckCircle } from "lucide-react"
 import Link from "next/link"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
 import { signIn,signUp } from "@/actions/auth.actions"
@@ -120,10 +120,10 @@ export default function AuthPage() {
           <div className="text-center mb-10">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="p-2 bg-gradient-to-r from-gray-700 to-gray-600 rounded-xl">
-                <MessageCircle className="w-6 h-6 text-white" />
+                <CheckCircle className="w-6 h-6 text-white" />
               </div>
               <h1 className="text-white text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                PrepWise
+                FinalRound AI
               </h1>
             </div>
             <p className="text-gray-300 text-base font-medium">Practice job interview with AI</p>
