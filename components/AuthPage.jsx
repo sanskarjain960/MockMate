@@ -132,9 +132,13 @@ export default function AuthPage() {
               <div className="p-2 bg-gradient-to-r from-gray-700 to-gray-600 rounded-xl">
                 <CheckCircle className="w-6 h-6 text-white" />
               </div>
-              <h1 className="text-white text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                FinalRound AI
-              </h1>
+              <h1 className="text-xl font-bold text-white">
+            Final
+            <span className="bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent">
+              Round
+            </span>
+            AI
+          </h1>
             </div>
             <p className="text-gray-300 text-base font-medium">Practice job interview with AI</p>
           </div>
