@@ -17,7 +17,7 @@ import Image from "next/image"
 
 export default function AuthPage() {
 
-  const [isSignIn, setIsSignIn] = useState(false)
+  const [isSignIn, setIsSignIn] = useState(true)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -33,55 +33,65 @@ export default function AuthPage() {
 
     if (isSignIn) {
       // Sign in logic
-      const {email,password} = formData;
-
-      if(!email || !password){
-        toast.error("Please fill all the fields");
-        return
+      try {
+        const {email,password} = formData;
+  
+        if(!email || !password){
+          toast.error("Please fill all the fields");
+          return
+        }
+  
+        const userCredentials = await signInWithEmailAndPassword(auth,email,password);
+  
+        const idToken = await userCredentials.user.getIdToken();
+  
+        if(!idToken){
+          toast.error("Failed to log into account. Please try again.");
+          return
+        }
+  
+        await signIn({
+          email,
+          idToken
+        });
+  
+        toast.success("Signed In Successfully");
+        router.push('/');
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message);
       }
-
-      const userCredentials = await signInWithEmailAndPassword(auth,email,password);
-
-      const idToken = await userCredentials.user.getIdToken();
-
-      if(!idToken){
-        toast.error("Failed to log into account. Please try again.");
-        return
-      }
-
-      await signIn({
-        email,
-        idToken
-      });
-
-      toast.success("Signed In Successfully");
-      router.push('/');
 
     } else {
       // Sign up logic
       // console.log("Creating account with:", formData)
-      const {name,email,password} = formData;
-
-      if(!name || !email || !password){
-        toast.error("Please fill all the fields");
-        return
+      try {
+        const {name,email,password} = formData;
+  
+        if(!name || !email || !password){
+          toast.error("Please fill all the fields");
+          return
+        }
+  
+        const userCredentials = await createUserWithEmailAndPassword(auth,email,password)
+  
+        const result = await signUp({
+          uid: userCredentials.user.uid,
+          name : name,
+          email,
+          password,
+        })
+  
+        if(!result.success){
+          toast.error(result.message)
+          return
+        }
+  
+        toast.success("Account Created Successfully, Please Sign In");
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message);
       }
-
-      const userCredentials = await createUserWithEmailAndPassword(auth,email,password)
-
-      const result = await signUp({
-        uid: userCredentials.user.uid,
-        name : name,
-        email,
-        password,
-      })
-
-      if(!result.success){
-        toast.error(result.message)
-        return
-      }
-
-      toast.success("Account Created Successfully, Please Sign In");
       
     }
     
